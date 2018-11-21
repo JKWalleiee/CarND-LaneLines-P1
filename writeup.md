@@ -2,15 +2,9 @@
 
 ---
 
-**Finding Lane Lines on the Road**
-
 The goal of this project is to make a pipeline that calculate lane lines with Opencv using Python.
 
-
-[//]: # (Image References)
-
-[image1]: ./examples/grayscale.jpg "Grayscale"
-[image2]: ./examples/laneLines_thirdPass.jpg "Third"
+<img src="./test_images/solidWhiteRight.jpg"  width="400"> <img src="./test_images_output/solidWhiteRight.jpg"  width="400">
 
 To test the pipeline, we used a test set of images and videos provided by Udacity. In this project the following assumptions are made:
 - The camera is always in the same relative position to the vehicle.
@@ -19,8 +13,6 @@ To test the pipeline, we used a test set of images and videos provided by Udacit
 
 ---
 
-- `![](https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png | width=100)`
-  - ![]( ./examples/laneLines_thirdPass.jpg | width=100)
 ### Reflection
 
 The programmed pipeline consists of 5 main stages:
@@ -30,9 +22,15 @@ The programmed pipeline consists of 5 main stages:
 - ROI segmentation.
 - Lines extraction.
 
+
 **Grayscale conversion**
 
 The RGB image is converted to grayscale, this in order to have a more precise information of the changes in the image (see edges extraction). This conversion is also necessary for the OpenCV Canny detector used in the edges extraction.
+
+<img src="./info_images_output/solidWhiteCurve.jpg_gray.jpg" width="300"> <img src="./info_images_output/solidWhiteRight.jpg_gray.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowCurve.jpg_gray.jpg" width="300"> <img src="./info_images_output/solidYellowCurve2.jpg_gray.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowLeft.jpg_gray.jpg" width="300"> <img src="./info_images_output/whiteCarLaneSwitch.jpg_gray.jpg" width="300"> 
+ 
 
 **Gaussian smoothing**
 
@@ -41,13 +39,28 @@ This stage has two main objectives:
 - Reduce the effect of the changes in the road, different to the lane lines, in the edge detection algorithm.
 To meet these objectives, a Gaussian filter was used to smooth the image.
 
+<img src="./info_images_output/solidWhiteCurve.jpg_blur.jpg" width="300"> <img src="./info_images_output/solidWhiteRight.jpg_blur.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowCurve.jpg_blur.jpg" width="300"> <img src="./info_images_output/solidYellowCurve2.jpg_blur.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowLeft.jpg_blur.jpg" width="300"> <img src="./info_images_output/whiteCarLaneSwitch.jpg_blur.jpg" width="300"> 
+
+
 **Edges extraction**
 
 In this stage a canny detector (link) was used to calculate the image edges. This algorithm greatly reduces number of points needed to process in the next steps.
 
+<img src="./info_images_output/solidWhiteCurve.jpg_edges.jpg" width="300"> <img src="./info_images_output/solidWhiteRight.jpg_edges.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowCurve.jpg_edges.jpg" width="300"> <img src="./info_images_output/solidYellowCurve2.jpg_edges.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowLeft.jpg_edges.jpg" width="300"> <img src="./info_images_output/whiteCarLaneSwitch.jpg_edges.jpg" width="300"> 
+
+
 **ROI segmentation**
 
 In this stage, the objective is to limit the search of the lane lines to a fixed region of interest (ROI). Here, a trapezoidal ROI was designed, based on the size of the image.
+
+<img src="./info_images_output/solidWhiteCurve.jpg_ROI.jpg" width="300"> <img src="./info_images_output/solidWhiteRight.jpg_ROI.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowCurve.jpg_ROI.jpg" width="300"> <img src="./info_images_output/solidYellowCurve2.jpg_ROI.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowLeft.jpg_ROI.jpg" width="300"> <img src="./info_images_output/whiteCarLaneSwitch.jpg_ROI.jpg" width="300"> 
+
 
 **Lines extraction**
 
@@ -57,13 +70,22 @@ This stage is divided into two sub-stages:
 
 First, the output image of the ROI stage is processed through a Hough transform algorithm, to find all the lines in the image.
 
+<img src="./info_images_output/solidWhiteCurve.jpg_partial_lines.jpg" width="300"> <img src="./info_images_output/solidWhiteRight.jpg_partial_lines.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowCurve.jpg_partial_lines.jpg" width="300"> <img src="./info_images_output/solidYellowCurve2.jpg_partial_lines.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowLeft.jpg_partial_lines.jpg" width="300"> <img src="./info_images_output/whiteCarLaneSwitch.jpg_partial_lines.jpg" width="300"> 
+ 
 - Full lines calculation:
 
 Afterwards, the raw lines are classified in right lines or left lines depending on the value of their slope. Lines with positive slope are considered left lines, and those with negative slope are considered right lines. In addition, in this stage only lines with a slope higher than 0.5 were taken into account, this in order to eliminate any line found in the image which does not correspond to a lane line.
 
 After having the lines divided into two sets, numpy methods are used to calculate a linear function that best fits the lines found, and a line is drawn from the bottom of the image to the horizon point of the road.
 
-
+<img src="./info_images_output/solidWhiteCurve.jpg_full_lines.jpg" width="300"> <img src="./info_images_output/solidWhiteRight.jpg_full_lines.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowCurve.jpg_full_lines.jpg" width="300"> <img src="./info_images_output/solidYellowCurve2.jpg_full_lines.jpg" width="300"> 
+ <img src="./info_images_output/solidYellowLeft.jpg_full_lines.jpg" width="300"> <img src="./info_images_output/whiteCarLaneSwitch.jpg_full_lines.jpg" width="300"> 
+ 
+ ---
+ 
 ### 2. Identify potential shortcomings with your current pipeline
 
 This pipeline has the following shortcomings:
